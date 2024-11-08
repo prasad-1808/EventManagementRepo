@@ -1,14 +1,18 @@
+// server/app.js
+
 const express = require("express");
-const userRoutes = require("./routes/userRoutes");
-const fileRoutes = require("./routes/fileRoutes");
 const cors = require("cors");
+const dotenv = require("dotenv");
+const userRoutes = require("./routes/userRoutes");
+const authRoutes = require("./routes/authRoutes");
+const driveRoutes = require("./routes/driveRoutes");
+
+dotenv.config();
 
 const app = express();
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:3001", // Add this line for your frontend on port 3001
-];
+// CORS configuration with multiple allowed origins
+const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
 
 app.use(
   cors({
@@ -23,11 +27,13 @@ app.use(
   })
 );
 
-app.use(express.json()); // Parse JSON payloads
-app.use(express.urlencoded({ extended: false })); // Parse URL-encoded payloads
+// Middleware to parse JSON and URL-encoded payloads
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-// Define routes
-app.use("/api/users", userRoutes);
-app.use("/api/files", fileRoutes);
+// Route handlers
+app.use("/api/users", userRoutes); // User-related routes
+app.use("/auth", authRoutes); // Authentication routes
+app.use("/api/drive", driveRoutes); // Google Drive-related routes
 
 module.exports = app;
