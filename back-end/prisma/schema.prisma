@@ -1,0 +1,34 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int    @id @default(autoincrement())
+  mobileNumber String @unique
+  fullName     String
+  password     String
+  role         String
+}
+
+model Event {
+  eventId   Int       @id @default(autoincrement())
+  name      String
+  eventDate DateTime  // Changed from Date to DateTime
+  startTime DateTime  // Changed from Time to DateTime
+  endTime   DateTime  // Changed from Time to DateTime
+
+  photos Photo[] // Relation to Photo model
+}
+
+model Photo {
+  photoId Int    @id @default(autoincrement())
+  url     String
+  eventId Int
+
+  event Event @relation(fields: [eventId], references: [eventId]) // Relation to Event model
+}
