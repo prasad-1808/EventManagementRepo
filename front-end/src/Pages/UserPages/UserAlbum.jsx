@@ -95,10 +95,10 @@ const UserAlbum = () => {
             className="file-item bg-white p-4 rounded-lg shadow-md"
           >
             <img
-              src={file.url}
-              alt={file.name}
-              className="file-image w-full h-40 object-cover rounded-lg mb-2"
-            />
+      src={`https://drive.google.com/thumbnail?id=${file.id}`}
+      alt={file.name}
+      className="file-image w-full h-40 object-cover rounded-lg mb-2"
+    />
             <p className="file-name text-gray-600 text-center">{file.name}</p>
           </div>
         ))}

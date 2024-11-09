@@ -22,10 +22,19 @@ exports.getFolders = async (req, res) => {
   }
 };
 
+
 exports.getFolderFiles = async (req, res) => {
   try {
     const { folderId } = req.params;
+
+    // Set credentials here if not already authenticated
+    oAuth2Client.setCredentials({
+      access_token: req.user.accessToken, // Retrieve from session or database
+      refresh_token: req.user.refreshToken, // Retrieve from session or database
+    });
+
     const drive = google.drive({ version: "v3", auth: oAuth2Client });
+
     const response = await drive.files.list({
       q: `'${folderId}' in parents and mimeType contains 'image/'`,
       fields: "files(id, name, mimeType, webContentLink)",
@@ -44,3 +53,5 @@ exports.getFolderFiles = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch files in folder" });
   }
 };
+
+
